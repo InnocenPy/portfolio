@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
+import { useScrollProgress } from '@/hooks/useScrollProgress'
+import { ScrollCameraController } from '@/three/controllers/ScrollCameraController'
+import { TerraceWorld } from '@/three/world/TerraceWorld'
 import { paletteColors } from '@/three/materials/paletteMaterials'
 import { RendererConfig } from './RendererConfig'
 
@@ -19,6 +22,7 @@ function useDocumentHidden(): boolean {
 export function ExperienceCanvas() {
   const reducedMotion = usePrefersReducedMotion()
   const hidden = useDocumentHidden()
+  const scrollProgress = useScrollProgress()
   const frameloop = hidden ? 'never' : reducedMotion ? 'demand' : 'always'
 
   return (
@@ -31,10 +35,8 @@ export function ExperienceCanvas() {
         style={{ background: paletteColors.midnight }}
       >
         <RendererConfig />
-        <mesh rotation={[0.4, 0.6, 0]}>
-          <boxGeometry args={[1.2, 1.2, 1.2]} />
-          <meshStandardMaterial color={paletteColors.navy} roughness={0.6} metalness={0.3} />
-        </mesh>
+        <ScrollCameraController progress={scrollProgress} />
+        <TerraceWorld />
       </Canvas>
     </div>
   )
