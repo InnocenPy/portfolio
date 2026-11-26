@@ -22,8 +22,7 @@ export function SkillsSection() {
               {category.items.map((item) => (
                 <li
                   key={item}
-                  tabIndex={0}
-                  className="cursor-default rounded border border-silver/30 px-3 py-1 text-sm text-pure transition-colors hover:border-cyan hover:text-cyan focus-visible:border-cyan focus-visible:text-cyan focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan"
+                  className="cursor-default rounded border border-silver/30 px-3 py-1 text-sm text-pure transition-colors hover:border-cyan hover:text-cyan"
                 >
                   {item}
                 </li>

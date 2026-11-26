@@ -13,12 +13,19 @@ export function ProjectDetailPanel() {
 
   useEffect(() => {
     if (!projectId) return
+    // Remember what opened the panel (e.g. the "Open" button) to restore focus on close.
+    const trigger = document.activeElement
     closeRef.current?.focus()
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') setSelectedProjectId(null)
     }
     window.addEventListener('keydown', onKeyDown)
-    return () => window.removeEventListener('keydown', onKeyDown)
+    return () => {
+      window.removeEventListener('keydown', onKeyDown)
+      if (trigger instanceof HTMLElement && trigger !== document.body && trigger.isConnected) {
+        trigger.focus()
+      }
+    }
   }, [projectId, setSelectedProjectId])
 
   if (!project) return null

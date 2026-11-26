@@ -10,6 +10,7 @@ import { ScrollCameraController } from '@/three/controllers/ScrollCameraControll
 import { TerraceWorld } from '@/three/world/TerraceWorld'
 import { shouldMountMonoliths } from '@/three/world/monolithVisibility'
 import { paletteColors } from '@/three/materials/paletteMaterials'
+import { getDpr } from './dpr'
 import { RendererConfig } from './RendererConfig'
 
 function useDocumentHidden(): boolean {
@@ -40,7 +41,7 @@ export function ExperienceCanvas() {
   return (
     <div className="pointer-events-none fixed inset-0 z-0" aria-hidden="true">
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={getDpr(isMobile)}
         frameloop={frameloop}
         gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
         camera={{ position: [0, 0, 5], fov: 45 }}

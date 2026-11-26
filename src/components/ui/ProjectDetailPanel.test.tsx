@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { expect, test, vi } from 'vitest'
-import { ExperienceProvider } from '@/store/experienceStore'
+import { ExperienceProvider, useExperienceStore } from '@/store/experienceStore'
 import { ProjectDetailPanel } from './ProjectDetailPanel'
 
 vi.mock('@/i18n/useT', () => ({
@@ -49,4 +49,29 @@ test('closes on Close click', async () => {
   renderPanel('gtp')
   await user.click(screen.getByRole('button', { name: 'works.close' }))
   expect(screen.queryByTestId('project-detail-panel')).not.toBeInTheDocument()
+})
+
+test('returns focus to the trigger when the panel closes', async () => {
+  const user = userEvent.setup()
+  function Harness() {
+    const { setSelectedProjectId } = useExperienceStore()
+    return (
+      <>
+        <button type="button" onClick={() => setSelectedProjectId('gtp')}>
+          open-trigger
+        </button>
+        <ProjectDetailPanel />
+      </>
+    )
+  }
+  render(
+    <ExperienceProvider>
+      <Harness />
+    </ExperienceProvider>,
+  )
+  const trigger = screen.getByRole('button', { name: 'open-trigger' })
+  await user.click(trigger)
+  expect(screen.getByRole('button', { name: 'works.close' })).toHaveFocus()
+  await user.keyboard('{Escape}')
+  expect(trigger).toHaveFocus()
 })
