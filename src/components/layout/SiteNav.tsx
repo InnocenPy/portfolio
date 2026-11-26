@@ -12,7 +12,7 @@ export function SiteNav() {
           {portfolioConfig.identity.name}
         </a>
         <nav aria-label="Main" className="min-w-0 flex-1 overflow-x-auto">
-          <ul className="flex items-center justify-end gap-4 whitespace-nowrap font-mono text-xs text-silver md:gap-6">
+          <ul className="flex items-center justify-start gap-4 whitespace-nowrap font-mono text-xs text-silver md:gap-6">
             {portfolioConfig.scenes.map((id) => (
               <li key={id}>
                 <a href={`#${id}`} className="transition hover:text-cyan focus-visible:text-cyan">
