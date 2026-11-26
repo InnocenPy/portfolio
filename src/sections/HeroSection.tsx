@@ -3,7 +3,7 @@ import { useT } from '@/i18n/useT'
 
 export function HeroSection() {
   const { locale, t } = useT()
-  const { identity } = portfolioConfig
+  const { identity, portrait } = portfolioConfig
   return (
     <section
       id="intro"
@@ -23,7 +23,27 @@ export function HeroSection() {
           {t('scroll')} ↓
         </p>
       </div>
-      <div aria-hidden="true" data-testid="hero-3d-placeholder" className="hidden min-h-[50vh] md:block" />
+      <div className="pointer-events-none relative mx-auto w-full max-w-md md:mx-0 md:max-w-none">
+        <div className="relative aspect-[4/5] overflow-hidden md:aspect-[3/4] md:min-h-[60vh]">
+          <img
+            src={portrait.src}
+            alt={portrait.alt[locale]}
+            width={900}
+            height={1125}
+            decoding="async"
+            fetchPriority="high"
+            className="h-full w-full object-cover object-center"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-r from-midnight/80 via-transparent to-transparent md:from-midnight/60"
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-midnight via-transparent to-midnight/20"
+          />
+        </div>
+      </div>
     </section>
   )
 }

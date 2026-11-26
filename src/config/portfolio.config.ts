@@ -28,6 +28,17 @@ export const portfolioConfig = {
     github: '#',
     linkedin: '#',
   },
+  cv: {
+    href: '/Seydou-Diakite-CV.pdf',
+    downloadAs: 'Seydou-Diakite-CV.pdf',
+  },
+  portrait: {
+    src: '/seydou-diakite-portrait.jpg',
+    alt: {
+      en: 'Seydou Diakite, Full-Stack Developer',
+      fr: 'Seydou Diakite, Développeur Full-Stack',
+    },
+  },
   scenes: [
     'intro',
     'about',

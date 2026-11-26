@@ -44,6 +44,7 @@ export const fr = {
     phone: 'Appeler',
     github: 'GitHub',
     linkedin: 'LinkedIn',
+    downloadCv: 'Télécharger le CV',
   },
   scroll: 'Défiler',
 } as const

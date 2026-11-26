@@ -7,7 +7,7 @@ const linkClass =
 
 export function ContactSection() {
   const { locale, t } = useT()
-  const { identity, social, contactHeadline } = portfolioConfig
+  const { identity, social, contactHeadline, cv } = portfolioConfig
   const phoneHref = `tel:${identity.phone.replace(/[^\d+]/g, '')}`
   return (
     <section
@@ -40,6 +40,15 @@ export function ContactSection() {
               {t('contact.linkedin')}
             </a>
           )}
+        </div>
+        <div className="mt-8">
+          <a
+            href={cv.href}
+            download={cv.downloadAs}
+            className="inline-flex items-center gap-2 rounded border border-cyan px-5 py-3 font-mono text-sm font-semibold text-cyan transition hover:bg-cyan hover:text-midnight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan"
+          >
+            {t('contact.downloadCv')}
+          </a>
         </div>
       </div>
     </section>

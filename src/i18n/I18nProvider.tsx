@@ -33,6 +33,7 @@ export type TranslationKey =
   | 'contact.phone'
   | 'contact.github'
   | 'contact.linkedin'
+  | 'contact.downloadCv'
   | 'scroll'
 
 export interface I18nContextValue {
