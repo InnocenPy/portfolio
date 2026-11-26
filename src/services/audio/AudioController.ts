@@ -55,6 +55,7 @@ export class AudioController {
   private readonly now: () => number
   private context: AudioContextLike | null = null
   private ambientOscillator: OscillatorLike | null = null
+  private enablePromise: Promise<void> | null = null
 
   public isEnabled = false
   public available: boolean
@@ -68,13 +69,30 @@ export class AudioController {
       'webkitAudioContext' in globalThis
   }
 
-  async enable(): Promise<void> {
-    if (this.isEnabled || !this.available) return
+  enable(): Promise<void> {
+    if (this.isEnabled || !this.available) return Promise.resolve()
+    if (this.enablePromise) return this.enablePromise
 
+    const operation = this.enableContext()
+    this.enablePromise = operation
+    void operation.then(
+      () => {
+        if (this.enablePromise === operation) this.enablePromise = null
+      },
+      () => {
+        if (this.enablePromise === operation) this.enablePromise = null
+      },
+    )
+    return operation
+  }
+
+  private async enableContext(): Promise<void> {
+    let context: AudioContextLike | null = null
     try {
-      const context = this.createContext()
+      context = this.createContext()
       this.context = context
       if (context.state === 'suspended') await context.resume()
+      if (this.context !== context) return
 
       const oscillator = context.createOscillator()
       const gain = context.createGain()
@@ -88,7 +106,14 @@ export class AudioController {
       this.ambientOscillator = oscillator
       this.isEnabled = true
     } catch {
-      this.context = null
+      if (context && this.context === context) {
+        this.context = null
+        try {
+          await context.close()
+        } catch {
+          // The controller remains disabled even if releasing the failed context also fails.
+        }
+      }
       this.ambientOscillator = null
       this.isEnabled = false
       this.available = false
@@ -107,7 +132,7 @@ export class AudioController {
   playUiTick(): void {
     if (!this.isEnabled || !this.context) return
 
-    const startTime = this.context.currentTime
+    const startTime = this.now()
     const oscillator = this.context.createOscillator()
     const gain = this.context.createGain()
     oscillator.type = 'sine'

@@ -67,6 +67,31 @@ describe('AudioController', () => {
     expect(context.close).toHaveBeenCalledOnce()
   })
 
+  it('shares concurrent enables and stays disabled when disabled during resume', async () => {
+    let finishResume!: () => void
+    const resume = new Promise<void>((resolve) => {
+      finishResume = resolve
+    })
+    const { context, ambient } = createAudioContext()
+    context.resume.mockReturnValue(resume)
+    const createContext = vi.fn(() => context)
+    const audio = new AudioController({ createContext })
+
+    const firstEnable = audio.enable()
+    const secondEnable = audio.enable()
+    const disable = audio.disable()
+
+    expect(secondEnable).toBe(firstEnable)
+    expect(createContext).toHaveBeenCalledOnce()
+
+    finishResume()
+    await Promise.all([firstEnable, secondEnable, disable])
+
+    expect(audio.isEnabled).toBe(false)
+    expect(ambient.start).not.toHaveBeenCalled()
+    expect(context.close).toHaveBeenCalledOnce()
+  })
+
   it('plays a short procedural tick only while enabled', async () => {
     const { context, tick, gains } = createAudioContext()
     const audio = new AudioController({ createContext: () => context })
