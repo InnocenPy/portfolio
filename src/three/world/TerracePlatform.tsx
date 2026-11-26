@@ -21,9 +21,11 @@ export function TerracePlatform({ y }: TerracePlatformProps) {
       slab: new BoxGeometry(14, 0.3, 10),
       rails: RAILS.map((rail) => new BoxGeometry(...rail.size)),
       slabMaterial: new MeshStandardMaterial({
-        color: paletteColors.navy,
-        roughness: 0.6,
-        metalness: 0.3,
+        color: paletteColors.platform,
+        roughness: 0.55,
+        metalness: 0.25,
+        emissive: paletteColors.cyan,
+        emissiveIntensity: 0.03,
       }),
       railMaterial: new MeshStandardMaterial({
         color: paletteColors.silver,

@@ -8,7 +8,7 @@ import { getCameraState, type CameraState } from './cameraPath'
 export const FOCUS_TRANSITION_SECONDS = 0.8
 
 interface ScrollCameraControllerProps {
-  /** Scroll progress 0..1 from useScrollProgress. */
+  /** Scroll progress 0..1 from ScrollProgressProvider. */
   progress: number
   /** When set, overrides the scroll path (selected project focus). */
   focus?: CameraState | null

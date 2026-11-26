@@ -16,6 +16,9 @@ export function RendererConfig() {
       <color attach="background" args={[paletteColors.midnight]} />
       <ambientLight intensity={0.8} />
       <directionalLight position={[3, 4, 5]} intensity={1} />
+      {/* Soft cool rim from behind + silver fill from the left so edges read on midnight. */}
+      <directionalLight position={[-4, 3, -5]} intensity={0.9} color={paletteColors.cyan} />
+      <directionalLight position={[-5, 1, 3]} intensity={0.35} color={paletteColors.silver} />
     </>
   )
 }

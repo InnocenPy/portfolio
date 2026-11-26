@@ -6,6 +6,8 @@ export const paletteColors = {
   cyan: '#00D4FF',
   pure: '#F5F7FA',
   silver: '#8995A7',
+  /** Slightly lifted navy so terraces/monoliths separate from midnight. */
+  platform: '#1C2A42',
 } as const
 
 export function createNavyMaterial(): MeshStandardMaterial {

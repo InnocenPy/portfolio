@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react'
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { getScrollProgress } from './scrollProgress'
 
-export function useScrollProgress(): number {
+const ScrollProgressContext = createContext<number | null>(null)
+
+/** Single scroll/resize + rAF subscriber; consumers read the shared progress (0..1). */
+export function ScrollProgressProvider({ children }: { children: ReactNode }) {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
@@ -24,5 +27,13 @@ export function useScrollProgress(): number {
     }
   }, [])
 
-  return progress
+  return <ScrollProgressContext.Provider value={progress}>{children}</ScrollProgressContext.Provider>
+}
+
+export function useScrollProgress(): number {
+  const value = useContext(ScrollProgressContext)
+  if (value === null) {
+    throw new Error('useScrollProgress must be used within ScrollProgressProvider')
+  }
+  return value
 }

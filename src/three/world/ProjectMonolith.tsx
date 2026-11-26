@@ -26,7 +26,7 @@ export function ProjectMonolith({ visualKey, position, selected, onSelect }: Pro
     }
   }, [hovered])
 
-  const emissiveIntensity = hovered ? 0.6 : selected ? 0.35 : 0
+  const emissiveIntensity = hovered ? 0.6 : selected ? 0.35 : 0.08
 
   return (
     <group position={position}>
@@ -43,7 +43,7 @@ export function ProjectMonolith({ visualKey, position, selected, onSelect }: Pro
       >
         <boxGeometry args={[WIDTH, HEIGHT, DEPTH]} />
         <meshStandardMaterial
-          color={paletteColors.navy}
+          color={paletteColors.platform}
           roughness={0.35}
           metalness={0.6}
           emissive={paletteColors.cyan}
