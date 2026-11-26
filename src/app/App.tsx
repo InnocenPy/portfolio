@@ -1,5 +1,10 @@
+import { ExperienceProvider } from '@/store/experienceStore'
 import { AppShell } from './AppShell'
 
 export default function App() {
-  return <AppShell />
+  return (
+    <ExperienceProvider>
+      <AppShell />
+    </ExperienceProvider>
+  )
 }

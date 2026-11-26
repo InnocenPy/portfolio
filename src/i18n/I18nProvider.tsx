@@ -22,6 +22,17 @@ export type TranslationKey =
   | 'webgl.unavailable'
   | 'works.open'
   | 'works.close'
+  | 'about.heading'
+  | 'about.philosophy'
+  | 'worksSection.heading'
+  | 'worksSection.technologies'
+  | 'skillsSection.heading'
+  | 'experienceSection.heading'
+  | 'contact.heading'
+  | 'contact.email'
+  | 'contact.phone'
+  | 'contact.github'
+  | 'contact.linkedin'
   | 'scroll'
 
 export interface I18nContextValue {

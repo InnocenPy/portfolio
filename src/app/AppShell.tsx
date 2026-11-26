@@ -1,9 +1,14 @@
 import { SkipLink } from '@/components/layout/SkipLink'
 import { SiteNav } from '@/components/layout/SiteNav'
 import { ScrollProgress } from '@/components/layout/ScrollProgress'
+import { ProjectDetailPanel } from '@/components/ui/ProjectDetailPanel'
 import { useScrollProgress } from '@/hooks/useScrollProgress'
 import { HeroSection } from '@/sections/HeroSection'
-import { PlaceholderSection } from '@/sections/PlaceholderSection'
+import { AboutSection } from '@/sections/AboutSection'
+import { WorksSection } from '@/sections/WorksSection'
+import { SkillsSection } from '@/sections/SkillsSection'
+import { ExperienceSection } from '@/sections/ExperienceSection'
+import { ContactSection } from '@/sections/ContactSection'
 
 export function AppShell() {
   const progress = useScrollProgress()
@@ -14,12 +19,13 @@ export function AppShell() {
       <SiteNav />
       <main id="main-content" tabIndex={-1}>
         <HeroSection />
-        <PlaceholderSection id="about" />
-        <PlaceholderSection id="works" />
-        <PlaceholderSection id="skills" />
-        <PlaceholderSection id="experience" />
-        <PlaceholderSection id="contact" />
+        <AboutSection />
+        <WorksSection />
+        <SkillsSection />
+        <ExperienceSection />
+        <ContactSection />
       </main>
+      <ProjectDetailPanel />
     </div>
   )
 }

@@ -23,5 +23,27 @@ export const fr = {
     open: 'Voir le projet',
     close: 'Fermer le projet',
   },
+  about: {
+    heading: 'À propos',
+    philosophy:
+      'Je conçois un logiciel comme on construit une maison : des fondations solides, une structure claire et des détails qui rendent l’ensemble agréable à vivre. Architecture propre, code lisible et communication honnête guident chaque projet.',
+  },
+  worksSection: {
+    heading: 'Projets sélectionnés',
+    technologies: 'Technologies',
+  },
+  skillsSection: {
+    heading: 'Compétences',
+  },
+  experienceSection: {
+    heading: 'Expérience',
+  },
+  contact: {
+    heading: 'Contact',
+    email: 'Envoyer un e-mail',
+    phone: 'Appeler',
+    github: 'GitHub',
+    linkedin: 'LinkedIn',
+  },
   scroll: 'Défiler',
 } as const
