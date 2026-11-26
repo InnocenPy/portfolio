@@ -1,6 +1,7 @@
 import type { SceneId } from '@/types/portfolio'
 
 export const portfolioConfig = {
+  siteUrl: 'https://portfolio.local',
   identity: {
     name: 'Seydou DIAKITE',
     title: {
