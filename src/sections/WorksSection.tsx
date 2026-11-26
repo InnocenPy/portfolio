@@ -9,14 +9,14 @@ export function WorksSection() {
     <section
       id="works"
       aria-labelledby="works-heading"
-      className="min-h-screen px-4 py-24 md:px-8"
+      className="pointer-events-none min-h-screen px-4 py-24 md:px-8"
     >
-      <h2 id="works-heading" className="text-3xl font-semibold text-pure md:text-5xl">
+      <h2 id="works-heading" className="pointer-events-auto text-3xl font-semibold text-pure md:text-5xl">
         {t('worksSection.heading')}
       </h2>
       <ul className="mt-10 grid gap-4 md:grid-cols-2">
         {projects.map((project) => (
-          <li key={project.id} className="rounded border border-silver/20 bg-navy p-5">
+          <li key={project.id} className="pointer-events-auto rounded border border-silver/20 bg-navy p-5">
             <p className="font-mono text-xs uppercase tracking-widest text-cyan">
               {project.category[locale]}
             </p>

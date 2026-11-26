@@ -2,8 +2,10 @@ import { useMemo } from 'react'
 import { portfolioConfig } from '@/config/portfolio.config'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
-import { TERRACE_SPACING } from '@/three/controllers/cameraPath'
+import { projects } from '@/data/projects'
+import { getMonolithPosition, TERRACE_SPACING } from '@/three/controllers/cameraPath'
 import { paletteColors } from '@/three/materials/paletteMaterials'
+import { ProjectMonolith } from './ProjectMonolith'
 import { TerracePlatform } from './TerracePlatform'
 
 function Particles() {
@@ -29,7 +31,17 @@ function Particles() {
   )
 }
 
-export function TerraceWorld() {
+interface TerraceWorldProps {
+  showMonoliths?: boolean
+  selectedProjectId?: string | null
+  onSelectProject?: (id: string) => void
+}
+
+export function TerraceWorld({
+  showMonoliths = false,
+  selectedProjectId = null,
+  onSelectProject,
+}: TerraceWorldProps) {
   const reducedMotion = usePrefersReducedMotion()
   const isMobile = useMediaQuery('(max-width: 768px)')
   const showParticles = !reducedMotion && !isMobile
@@ -40,6 +52,16 @@ export function TerraceWorld() {
       {portfolioConfig.scenes.map((scene, index) => (
         <TerracePlatform key={scene} y={index * TERRACE_SPACING} />
       ))}
+      {showMonoliths &&
+        projects.map((project, index) => (
+          <ProjectMonolith
+            key={project.id}
+            visualKey={project.visualKey}
+            position={getMonolithPosition(index)}
+            selected={project.id === selectedProjectId}
+            onSelect={() => onSelectProject?.(project.id)}
+          />
+        ))}
       {showParticles && <Particles />}
     </>
   )

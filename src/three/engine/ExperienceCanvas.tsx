@@ -1,9 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { useMediaQuery } from '@/hooks/useMediaQuery'
 import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
 import { useScrollProgress } from '@/hooks/useScrollProgress'
+import { useExperienceStore } from '@/store/experienceStore'
+import { getFocusCameraState } from '@/three/controllers/cameraPath'
 import { ScrollCameraController } from '@/three/controllers/ScrollCameraController'
 import { TerraceWorld } from '@/three/world/TerraceWorld'
+import { shouldMountMonoliths } from '@/three/world/monolithVisibility'
 import { paletteColors } from '@/three/materials/paletteMaterials'
 import { RendererConfig } from './RendererConfig'
 
@@ -23,6 +27,13 @@ export function ExperienceCanvas() {
   const reducedMotion = usePrefersReducedMotion()
   const hidden = useDocumentHidden()
   const scrollProgress = useScrollProgress()
+  const isMobile = useMediaQuery('(max-width: 768px)')
+  const { selectedProjectId, setSelectedProjectId } = useExperienceStore()
+  const focus = useMemo(
+    () => (selectedProjectId ? getFocusCameraState(selectedProjectId, isMobile) : null),
+    [selectedProjectId, isMobile],
+  )
+  const showMonoliths = shouldMountMonoliths(scrollProgress, selectedProjectId)
   const frameloop = hidden ? 'never' : reducedMotion ? 'demand' : 'always'
 
   return (
@@ -32,11 +43,15 @@ export function ExperienceCanvas() {
         frameloop={frameloop}
         gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
         camera={{ position: [0, 0, 5], fov: 45 }}
-        style={{ background: paletteColors.midnight }}
+        style={{ background: paletteColors.midnight, pointerEvents: 'auto' }}
       >
         <RendererConfig />
-        <ScrollCameraController progress={scrollProgress} />
-        <TerraceWorld />
+        <ScrollCameraController progress={scrollProgress} focus={focus} />
+        <TerraceWorld
+          showMonoliths={showMonoliths}
+          selectedProjectId={selectedProjectId}
+          onSelectProject={setSelectedProjectId}
+        />
       </Canvas>
     </div>
   )

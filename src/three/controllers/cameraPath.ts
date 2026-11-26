@@ -1,4 +1,5 @@
 import { portfolioConfig } from '@/config/portfolio.config'
+import { projects } from '@/data/projects'
 
 export type Vec3 = [number, number, number]
 export interface CameraState {
@@ -39,5 +40,33 @@ export function getCameraState(progress: number): CameraState {
   return {
     position: lerpVec(a.position, b.position, t),
     lookAt: lerpVec(a.lookAt, b.lookAt, t),
+  }
+}
+
+export const MONOLITH_SPACING = 2.4
+export const MONOLITH_CENTER_Y = 1.4
+export const FOCUS_DISTANCE_DESKTOP = 5
+export const FOCUS_DISTANCE_MOBILE_FACTOR = 1.4
+
+const WORKS_INDEX = Math.max(0, portfolioConfig.scenes.indexOf('works'))
+
+/** World position (center) of the monolith at `index` on the Works terrace. */
+export function getMonolithPosition(index: number, count: number = projects.length): Vec3 {
+  const x = (index - (count - 1) / 2) * MONOLITH_SPACING
+  return [x, WORKS_INDEX * TERRACE_SPACING + MONOLITH_CENTER_Y, 0]
+}
+
+/**
+ * Camera pose focusing a project's monolith, offset in front of it.
+ * Mobile uses 1.4x the desktop distance so the mesh is not cropped.
+ */
+export function getFocusCameraState(projectId: string, isMobile = false): CameraState | null {
+  const index = projects.findIndex((p) => p.id === projectId)
+  if (index < 0) return null
+  const [x, y, z] = getMonolithPosition(index)
+  const distance = FOCUS_DISTANCE_DESKTOP * (isMobile ? FOCUS_DISTANCE_MOBILE_FACTOR : 1)
+  return {
+    position: [x, y + 0.6, z + distance],
+    lookAt: [x, y, z],
   }
 }
