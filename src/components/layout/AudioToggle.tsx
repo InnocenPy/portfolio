@@ -13,13 +13,13 @@ export function AudioToggle() {
   const toggleAudio = async () => {
     if (audioEnabled) {
       await audioController.disable()
-      setAudioEnabled(false)
+      setAudioEnabled(audioController.isEnabled)
       return
     }
 
     await audioController.enable()
     setAvailable(audioController.available)
-    if (audioController.available) setAudioEnabled(true)
+    setAudioEnabled(audioController.isEnabled)
   }
 
   return (

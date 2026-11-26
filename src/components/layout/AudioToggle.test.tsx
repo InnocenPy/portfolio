@@ -20,8 +20,52 @@ vi.mock('@/i18n/useT', () => ({
 beforeEach(() => {
   audio.available = true
   audio.isEnabled = false
-  audio.enable.mockClear()
-  audio.disable.mockClear()
+  audio.enable.mockReset()
+  audio.disable.mockReset()
+  audio.enable.mockImplementation(async () => {
+    audio.isEnabled = true
+  })
+  audio.disable.mockImplementation(async () => {
+    audio.isEnabled = false
+  })
+})
+
+test('stays off when enable resolves without enabling (superseded)', async () => {
+  audio.enable.mockImplementationOnce(async () => {})
+  const user = userEvent.setup()
+  render(
+    <ExperienceProvider>
+      <AudioToggle />
+    </ExperienceProvider>,
+  )
+
+  await user.click(screen.getByRole('button', { name: 'audio.enable' }))
+
+  expect(audio.enable).toHaveBeenCalledOnce()
+  expect(screen.getByRole('button', { name: 'audio.enable' })).toBeInTheDocument()
+})
+
+test('syncs state to controller isEnabled after enable and disable', async () => {
+  const user = userEvent.setup()
+  render(
+    <ExperienceProvider>
+      <AudioToggle />
+    </ExperienceProvider>,
+  )
+
+  await user.click(screen.getByRole('button', { name: 'audio.enable' }))
+  expect(screen.getByRole('button', { name: 'audio.disable' })).toHaveAttribute(
+    'aria-pressed',
+    'true',
+  )
+
+  // disable that leaves the controller enabled (e.g. a newer enable won) keeps toggle on
+  audio.disable.mockImplementationOnce(async () => {})
+  await user.click(screen.getByRole('button', { name: 'audio.disable' }))
+  expect(screen.getByRole('button', { name: 'audio.disable' })).toBeInTheDocument()
+
+  await user.click(screen.getByRole('button', { name: 'audio.disable' }))
+  expect(screen.getByRole('button', { name: 'audio.enable' })).toBeInTheDocument()
 })
 
 test('enables audio only after the user clicks the toggle', async () => {

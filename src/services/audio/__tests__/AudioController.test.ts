@@ -92,6 +92,55 @@ describe('AudioController', () => {
     expect(context.close).toHaveBeenCalledOnce()
   })
 
+  it('keeps available true when resume rejects after the context was closed by disable', async () => {
+    let rejectResume!: (error: Error) => void
+    const resume = new Promise<void>((_, reject) => {
+      rejectResume = reject
+    })
+    const { context, ambient } = createAudioContext()
+    context.resume.mockReturnValue(resume)
+    const audio = new AudioController({ createContext: () => context })
+
+    const enable = audio.enable()
+    const disable = audio.disable()
+    rejectResume(new Error('context closed'))
+    await Promise.all([enable, disable])
+
+    expect(audio.available).toBe(true)
+    expect(audio.isEnabled).toBe(false)
+    expect(ambient.start).not.toHaveBeenCalled()
+    expect(context.close).toHaveBeenCalledOnce()
+  })
+
+  it('ends enabled after enable-disable-enable while the first resume is pending', async () => {
+    let finishFirstResume!: () => void
+    const firstResume = new Promise<void>((resolve) => {
+      finishFirstResume = resolve
+    })
+    const first = createAudioContext()
+    const second = createAudioContext()
+    first.context.resume.mockReturnValue(firstResume)
+    const contexts = [first.context, second.context]
+    const createContext = vi.fn(() => contexts.shift()!)
+    const audio = new AudioController({ createContext })
+
+    const firstEnable = audio.enable()
+    const disable = audio.disable()
+    const secondEnable = audio.enable()
+
+    expect(secondEnable).not.toBe(firstEnable)
+    finishFirstResume()
+    await Promise.all([firstEnable, disable, secondEnable])
+
+    expect(createContext).toHaveBeenCalledTimes(2)
+    expect(audio.isEnabled).toBe(true)
+    expect(audio.available).toBe(true)
+    expect(first.ambient.start).not.toHaveBeenCalled()
+    expect(first.context.close).toHaveBeenCalledOnce()
+    expect(second.ambient.start).toHaveBeenCalledOnce()
+    expect(second.context.close).not.toHaveBeenCalled()
+  })
+
   it('plays a short procedural tick only while enabled', async () => {
     const { context, tick, gains } = createAudioContext()
     const audio = new AudioController({ createContext: () => context })

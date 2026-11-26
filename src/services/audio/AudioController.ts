@@ -106,21 +106,26 @@ export class AudioController {
       this.ambientOscillator = oscillator
       this.isEnabled = true
     } catch {
-      if (context && this.context === context) {
-        this.context = null
+      // A newer enable/disable superseded this attempt (e.g. resume rejected because
+      // disable() closed the context). Do not clobber the newer state.
+      if (this.context !== context) return
+
+      this.context = null
+      this.ambientOscillator = null
+      this.isEnabled = false
+      this.available = false
+      if (context) {
         try {
           await context.close()
         } catch {
           // The controller remains disabled even if releasing the failed context also fails.
         }
       }
-      this.ambientOscillator = null
-      this.isEnabled = false
-      this.available = false
     }
   }
 
   async disable(): Promise<void> {
+    this.enablePromise = null
     this.ambientOscillator?.stop()
     this.ambientOscillator = null
     const context = this.context
