@@ -9,10 +9,10 @@ export function SkillsSection() {
       aria-labelledby="skills-heading"
       className="min-h-screen px-4 py-24 md:px-8"
     >
-      <h2 id="skills-heading" className="text-3xl font-semibold text-pure md:text-5xl">
+      <h2 id="skills-heading" className="pointer-events-auto text-3xl font-semibold text-pure md:text-5xl">
         {t('skillsSection.heading')}
       </h2>
-      <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="pointer-events-auto mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {skills.map((category) => (
           <div key={category.id}>
             <h3 className="font-mono text-sm uppercase tracking-widest text-cyan">

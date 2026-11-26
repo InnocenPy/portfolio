@@ -1,3 +1,4 @@
+import { MOBILE_MEDIA_QUERY } from '@/config/breakpoints'
 import { useMemo } from 'react'
 import { portfolioConfig } from '@/config/portfolio.config'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -43,7 +44,7 @@ export function TerraceWorld({
   onSelectProject,
 }: TerraceWorldProps) {
   const reducedMotion = usePrefersReducedMotion()
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY)
   const showParticles = !reducedMotion && !isMobile
 
   return (

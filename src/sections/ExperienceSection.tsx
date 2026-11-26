@@ -10,10 +10,10 @@ export function ExperienceSection() {
       aria-labelledby="experience-heading"
       className="min-h-screen px-4 py-24 md:px-8"
     >
-      <h2 id="experience-heading" className="text-3xl font-semibold text-pure md:text-5xl">
+      <h2 id="experience-heading" className="pointer-events-auto text-3xl font-semibold text-pure md:text-5xl">
         {t('experienceSection.heading')}
       </h2>
-      <ol className="mt-10 max-w-2xl border-l border-silver/30">
+      <ol className="pointer-events-auto mt-10 max-w-2xl border-l border-silver/30">
         {experience.map((item) => (
           <li
             key={item.id}

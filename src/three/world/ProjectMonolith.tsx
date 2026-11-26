@@ -29,19 +29,18 @@ export function ProjectMonolith({ visualKey, position, selected, onSelect }: Pro
   const emissiveIntensity = hovered ? 0.6 : selected ? 0.35 : 0
 
   return (
-    <group
-      position={position}
-      onPointerOver={(e: ThreeEvent<PointerEvent>) => {
-        e.stopPropagation()
-        setHovered(true)
-      }}
-      onPointerOut={() => setHovered(false)}
-      onClick={(e: ThreeEvent<MouseEvent>) => {
-        e.stopPropagation()
-        onSelect()
-      }}
-    >
-      <mesh>
+    <group position={position}>
+      <mesh
+        onPointerOver={(e: ThreeEvent<PointerEvent>) => {
+          e.stopPropagation()
+          setHovered(true)
+        }}
+        onPointerOut={() => setHovered(false)}
+        onClick={(e: ThreeEvent<MouseEvent>) => {
+          e.stopPropagation()
+          onSelect()
+        }}
+      >
         <boxGeometry args={[WIDTH, HEIGHT, DEPTH]} />
         <meshStandardMaterial
           color={paletteColors.navy}

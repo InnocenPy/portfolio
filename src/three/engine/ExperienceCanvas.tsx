@@ -1,3 +1,4 @@
+import { MOBILE_MEDIA_QUERY } from '@/config/breakpoints'
 import { useEffect, useMemo, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
@@ -27,7 +28,7 @@ export function ExperienceCanvas() {
   const reducedMotion = usePrefersReducedMotion()
   const hidden = useDocumentHidden()
   const scrollProgress = useScrollProgress()
-  const isMobile = useMediaQuery('(max-width: 768px)')
+  const isMobile = useMediaQuery(MOBILE_MEDIA_QUERY)
   const { selectedProjectId, setSelectedProjectId } = useExperienceStore()
   const focus = useMemo(
     () => (selectedProjectId ? getFocusCameraState(selectedProjectId, isMobile) : null),

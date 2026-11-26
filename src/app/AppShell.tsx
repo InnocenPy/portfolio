@@ -32,7 +32,7 @@ export function AppShell() {
       <SkipLink />
       <ScrollProgress progress={progress} />
       <SiteNav />
-      <main id="main-content" tabIndex={-1} className="relative z-10">
+      <main id="main-content" tabIndex={-1} className="pointer-events-none relative z-10">
         <HeroSection />
         <AboutSection />
         <WorksSection />

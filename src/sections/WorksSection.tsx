@@ -6,22 +6,30 @@ export function WorksSection() {
   const { locale, t } = useT()
   const { setSelectedProjectId } = useExperienceStore()
   return (
+    // Section is click-through (pointer-events-none) so the Canvas behind can raycast
+    // the monoliths in the empty middle band; only heading and cards capture pointer events.
     <section
       id="works"
       aria-labelledby="works-heading"
-      className="pointer-events-none min-h-screen px-4 py-24 md:px-8"
+      className="pointer-events-none flex min-h-screen flex-col justify-between gap-10 px-4 py-24 md:px-8"
     >
-      <h2 id="works-heading" className="pointer-events-auto text-3xl font-semibold text-pure md:text-5xl">
+      <h2
+        id="works-heading"
+        className="pointer-events-auto self-start text-3xl font-semibold text-pure md:text-5xl"
+      >
         {t('worksSection.heading')}
       </h2>
-      <ul className="mt-10 grid gap-4 md:grid-cols-2">
+      <ul className="grid gap-4 md:grid-cols-3 lg:grid-cols-6">
         {projects.map((project) => (
-          <li key={project.id} className="pointer-events-auto rounded border border-silver/20 bg-navy p-5">
+          <li
+            key={project.id}
+            className="pointer-events-auto rounded border border-silver/20 bg-navy p-4"
+          >
             <p className="font-mono text-xs uppercase tracking-widest text-cyan">
               {project.category[locale]}
             </p>
-            <h3 className="mt-2 text-xl font-semibold text-pure">{project.name}</h3>
-            <p className="mt-2 text-silver">{project.shortDescription[locale]}</p>
+            <h3 className="mt-2 text-lg font-semibold text-pure">{project.name}</h3>
+            <p className="mt-2 text-sm text-silver">{project.shortDescription[locale]}</p>
             <button
               type="button"
               onClick={() => setSelectedProjectId(project.id)}

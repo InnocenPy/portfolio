@@ -15,7 +15,7 @@ export function ContactSection() {
       aria-labelledby="contact-heading"
       className="flex min-h-screen items-center px-4 py-24 md:px-8"
     >
-      <div className="max-w-3xl">
+      <div className="pointer-events-auto max-w-3xl">
         <h2 id="contact-heading" className="text-3xl font-semibold text-pure md:text-5xl">
           {t('contact.heading')}
         </h2>
