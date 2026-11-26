@@ -1,4 +1,5 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useMemo, useState, type ReactNode } from 'react'
+import { audioController } from '@/services/audio/AudioController'
 
 export interface ExperienceStore {
   selectedProjectId: string | null
@@ -16,12 +17,19 @@ export function ExperienceProvider({
   children: ReactNode
   initialProjectId?: string | null
 }) {
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(initialProjectId)
+  const [selectedProjectId, setSelectedProjectIdState] = useState<string | null>(initialProjectId)
   const [audioEnabled, setAudioEnabled] = useState(false)
+  const setSelectedProjectId = useCallback(
+    (id: string | null) => {
+      setSelectedProjectIdState(id)
+      if (id && audioEnabled) audioController.playUiTick()
+    },
+    [audioEnabled],
+  )
 
   const value = useMemo<ExperienceStore>(
     () => ({ selectedProjectId, setSelectedProjectId, audioEnabled, setAudioEnabled }),
-    [selectedProjectId, audioEnabled],
+    [selectedProjectId, setSelectedProjectId, audioEnabled],
   )
 
   return <ExperienceContext.Provider value={value}>{children}</ExperienceContext.Provider>
