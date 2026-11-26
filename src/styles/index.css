@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-midnight: #080B12;
+  --color-navy: #101827;
+  --color-cyan: #00D4FF;
+  --color-pure: #F5F7FA;
+  --color-silver: #8995A7;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+html, body, #root {
+  min-height: 100%;
+  background: var(--color-midnight);
+  color: var(--color-pure);
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-display);
+}
